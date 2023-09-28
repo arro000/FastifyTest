@@ -1,17 +1,18 @@
 'use strict'
-
-
-
-import dataRoutes from "../routes/data.js" 
-import {describe,expect } from "chai"
+import dataRoutes from "../src/routes/data.js" 
+import {expect } from "chai"
 import fastify from "fastify" 
 
 describe('data routes', () => {
   it('shoud create a new user for db', async () => {
 
-    const response = await app.inject({
-      method: 'post',
-      url: '/register'
+    const response = await fastify.inject({
+      method: 'POST',
+      url: '/register',
+      body:{
+        username:"gino",
+        password :"pino"
+      }
     })
   
     console.log('status code: ', response.statusCode)
@@ -20,7 +21,7 @@ describe('data routes', () => {
 
 it('shoud create a new user for db', async () => {
 
-    const response = await app.inject({
+    const response = await fastify.inject({
       method: 'post',
       url: '/login'
     })
@@ -30,7 +31,7 @@ it('shoud create a new user for db', async () => {
 })
 it('shoud create a new user for db', async () => {
 
-    const response = await app.inject({
+    const response = await fastify.inject({
       method: 'delete',
       url: '/delete'
     })

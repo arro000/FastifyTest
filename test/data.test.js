@@ -1,14 +1,12 @@
 'use strict'
-
-import dataRoutes from "../routes/data.js" 
-import {describe,expect } from "chai"
-import fastify from "fastify" 
+import {expect } from "chai" 
+import server from "../src/server.js"
 
 describe('data routes', () => {
   it('shoud create a new user for db', async () => {
   
 
-    const response = await fastify.inject({
+    const response = await server.inject({
       method: 'POST',
       url: '/register',
       body:{
@@ -23,7 +21,7 @@ describe('data routes', () => {
 
 
 it('shoud create a new user for db', async () => {
-    const response = await fastify.inject({
+    const response = await server.inject({
       method: 'GET',
       url: '/data/'+1
     })
@@ -34,7 +32,7 @@ it('shoud create a new user for db', async () => {
 
 it('shoud create a new user for db', async () => {
 
-    const response = await fastify.inject({
+    const response = await server.inject({
       method: 'PATCH',
       url: '/data/'+1
     })
@@ -43,7 +41,7 @@ it('shoud create a new user for db', async () => {
     console.log('body: ', response.body)
 })
 it('shoud create a new user for db', async () => {
-    const response = await fastify.inject({
+    const response = await server.inject({
         method: 'DELETE',
         url: '/data/'+1
     })

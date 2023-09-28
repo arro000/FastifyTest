@@ -9,37 +9,41 @@ import dotenv from "dotenv"
 
 dotenv.config()
 
-
-const server = fastify({
-  logger: {
-    level: 'info',
-     
-  }
-})
-
-//setup autentication plugin
-server.register(fastifyJwt, {
-  secret: process.env.JWTSECRET,
-  sign: {
-    expiresIn: '10m'
-  }
-})
-server.decorate("authenticate", async function(request, reply) {
-  try {
-    await request.jwtVerify()
-  } catch (err) {
-    reply.send(err)
-  }
-})
-
-//register all the needed routes
-server.register(userRoutes);
-server.register(dataRoutes);
+export default function buildServer(){
 
 
-server.listen({ port: process.env.PORT }, (err, address) => {
+  const server = fastify({
+    logger: {
+      level: 'info',
+       
+    }
+  })
+  
+  //setup autentication plugin
+  server.register(fastifyJwt, {
+    secret: process.env.JWTSECRET,
+    sign: {
+      expiresIn: '10m'
+    }
+  })
+  server.decorate("authenticate", async function(request, reply) {
+    try {
+      await request.jwtVerify()
+    } catch (err) {
+      reply.send(err)
+    }
+  })
+  
+  //register all the needed routes
+  server.register(userRoutes);
+  server.register(dataRoutes);
+  return server  
+}
+
+buildServer().listen({ port: process.env.PORT }, (err, address) => {
   if (err) {
     server.log.error(err)
     process.exit(1)
   }
 })
+ 
