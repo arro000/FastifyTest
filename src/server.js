@@ -9,15 +9,19 @@ import dotenv from "dotenv"
 
 dotenv.config()
 
-export default function buildServer(){
+export default function buildServer(test=false){
 
-
-  const server = fastify({
+  let props={
     logger: {
       level: 'info',
        
     }
-  })
+  }
+  if(test){
+    let props={}
+  }
+
+  const server = fastify(props)
   
   //setup autentication plugin
   server.register(fastifyJwt, {

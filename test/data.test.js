@@ -1,7 +1,7 @@
 'use strict'
 import {expect } from "chai" 
-import server from "../src/server.js"
-
+import serverBuilder from "../src/server.js"
+const server= serverBuilder(true)
 describe('data routes', () => {
   it('shoud create a new user for db', async () => {
   

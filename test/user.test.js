@@ -1,12 +1,14 @@
 'use strict'
 import dataRoutes from "../src/routes/data.js" 
 import {expect } from "chai"
-import fastify from "fastify" 
 
-describe('data routes', () => {
+import serverBuilder from "../src/server.js"
+const server= serverBuilder(true)
+
+describe('user routes', () => {
   it('shoud create a new user for db', async () => {
 
-    const response = await fastify.inject({
+    const response = await server.inject({
       method: 'POST',
       url: '/register',
       body:{
@@ -21,7 +23,7 @@ describe('data routes', () => {
 
 it('shoud create a new user for db', async () => {
 
-    const response = await fastify.inject({
+    const response = await server.inject({
       method: 'post',
       url: '/login'
     })
@@ -31,7 +33,7 @@ it('shoud create a new user for db', async () => {
 })
 it('shoud create a new user for db', async () => {
 
-    const response = await fastify.inject({
+    const response = await server.inject({
       method: 'delete',
       url: '/delete'
     })
