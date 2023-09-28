@@ -1,0 +1,26 @@
+{
+  "name": "FastifyTest",
+  "version": "1.0.0",
+  "description": "A simple test server that save different base64 encoded strings on filesystem",
+  "main": "index.js",
+  "author": "Andrea Arrighi",
+  "license": "MIT",
+  "type": "module",
+  "imports": {
+    "#routes/": "./src/routes/",
+    "#tests/": "./src/tests/"
+  },
+  "scripts": {
+    "start": "node src/server.js",
+    "test": "node src/tests/app.test.js",
+    "dev": "nodemon src/server.js"
+  },
+  "dependencies": {
+    "@fastify/jwt": "^7.2.1",
+    "dotenv": "^16.3.1",
+    "fastify": "^4.23.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}
