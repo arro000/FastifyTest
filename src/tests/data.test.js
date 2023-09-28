@@ -1,57 +1,58 @@
 'use strict'
 
 import dataRoutes from "../routes/data.js" 
-const app = dataRoutes()
-const testCreate= async () =>{
+import {describe,expect } from "chai"
+import fastify from "fastify" 
+
+describe('data routes', () => {
+  it('shoud create a new user for db', async () => {
   
 
-    const response = await app.inject({
+    const response = await fastify.inject({
       method: 'POST',
-      url: '/data'
+      url: '/register',
+      body:{
+        username:"gino",
+        password :"pino"
+      }
     })
   
     console.log('status code: ', response.statusCode)
     console.log('body: ', response.body)
-}
+})
 
-const testRead= async () =>{ 
 
-    const response = await app.inject({
+it('shoud create a new user for db', async () => {
+    const response = await fastify.inject({
       method: 'GET',
       url: '/data/'+1
     })
   
     console.log('status code: ', response.statusCode)
     console.log('body: ', response.body)
-}
-const testUpdate= async () =>{ 
+})
 
-    const response = await app.inject({
+it('shoud create a new user for db', async () => {
+
+    const response = await fastify.inject({
       method: 'PATCH',
       url: '/data/'+1
     })
   
     console.log('status code: ', response.statusCode)
     console.log('body: ', response.body)
-}
-const testDelete= async () =>{ 
-
-    const response = await app.inject({
+})
+it('shoud create a new user for db', async () => {
+    const response = await fastify.inject({
         method: 'DELETE',
         url: '/data/'+1
     })
   
     console.log('status code: ', response.statusCode)
     console.log('body: ', response.body)
-}
+})
+})
 
-export default  async function test() {
-    await testCreate()
-    await testRead()
-    await testUpdate()
-    await testDelete()
-
-}
  
 
 

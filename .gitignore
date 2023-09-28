@@ -42,3 +42,7 @@ jspm_packages/
 
 # User-specific stuff
 .DS_Store
+
+
+#application specific
+*.db.json

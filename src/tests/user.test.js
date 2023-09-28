@@ -1,10 +1,13 @@
 'use strict'
 
 
-import userRoutes from "../routes/user.js" 
- 
-const testRegister= async () =>{
-    const app = userRoutes()
+
+import dataRoutes from "../routes/data.js" 
+import {describe,expect } from "chai"
+import fastify from "fastify" 
+
+describe('data routes', () => {
+  it('shoud create a new user for db', async () => {
 
     const response = await app.inject({
       method: 'post',
@@ -13,10 +16,9 @@ const testRegister= async () =>{
   
     console.log('status code: ', response.statusCode)
     console.log('body: ', response.body)
-}
+})
 
-const testLogin= async () =>{
-    const app = userRoutes()
+it('shoud create a new user for db', async () => {
 
     const response = await app.inject({
       method: 'post',
@@ -25,9 +27,8 @@ const testLogin= async () =>{
   
     console.log('status code: ', response.statusCode)
     console.log('body: ', response.body)
-}
-const testDelete= async () =>{
-    const app = userRoutes()
+})
+it('shoud create a new user for db', async () => {
 
     const response = await app.inject({
       method: 'delete',
@@ -36,15 +37,8 @@ const testDelete= async () =>{
   
     console.log('status code: ', response.statusCode)
     console.log('body: ', response.body)
-}
-
-export default  async function test(){
-    await testRegister()
-    await testLogin()
-
-    await testDelete()
-
-}
+})
+})
  
 
 

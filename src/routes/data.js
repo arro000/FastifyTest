@@ -4,6 +4,7 @@ export default async function (fastify, options) {
     /**
      * create route
      */
+    console.log(fastify)
     const createSchema = {
       onRequest: [fastify.authenticate],
 

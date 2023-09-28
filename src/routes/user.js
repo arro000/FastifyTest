@@ -7,6 +7,7 @@ import { sha256 } from "../utils/utils.js";
 
 export default async function (fastify, options) {
 
+  console.log(fastify)
   /**
    * Register a new user to db
    */
