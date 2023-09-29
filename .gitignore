@@ -46,3 +46,6 @@ jspm_packages/
 
 #application specific
 *.db.json
+.nyc_output
+.vscode
+coverage

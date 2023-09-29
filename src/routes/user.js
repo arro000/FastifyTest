@@ -7,7 +7,6 @@ import { sha256 } from "../utils/utils.js";
 
 export default async function (fastify, options) {
 
-  console.log(fastify)
   /**
    * Register a new user to db
    */
@@ -97,7 +96,7 @@ const userSchema = {
   }
 
   fastify.delete("/delete", deleteUserSchema,async (request, reply) => {
-    console.log(request.user.roles)
+   
     if(request.user.roles.includes("admin")){
       const ret = FsHandler.remove(process.env.USERDB ,(a)=>a.username === request.body.username)
       
