@@ -11,7 +11,7 @@ describe("user routes", () => {
 			method: "POST",
 			url: "/register",
 			body: {
-				username: "gino",
+				username: "gino@domain.com",
 				password: "giova",
 			},
 		});
@@ -35,7 +35,7 @@ describe("user routes", () => {
 			method: "POST",
 			url: "/register",
 			body: {
-				username: "gino",
+				username: "gino@domain.com",
 				password: "giovanni6",
 			},
 		});
@@ -48,7 +48,7 @@ describe("user routes", () => {
 			method: "POST",
 			url: "/register",
 			body: {
-				username: "gino",
+				username: "gino@domain.com",
 				password: "giovanni6",
 			},
 		});
@@ -61,7 +61,7 @@ describe("user routes", () => {
 			method: "POST",
 			url: "/login",
 			body: {
-				username: "gino",
+				username: "gino@domain.com",
 				password: "giovanni6",
 			},
 		});
@@ -70,14 +70,14 @@ describe("user routes", () => {
 
 		expect(
 			jwt.verify(response.json().access_token, process.env.JWTSECRET).user
-		).to.equal("gino");
+		).to.equal("gino@domain.com");
 	});
 	it("Should prevent login with an incorrect password.", async () => {
 		const response = await server.inject({
 			method: "post",
 			url: "/login",
 			body: {
-				username: "gino",
+				username: "gino@domain.com",
 				password: "pinoilpulcino",
 			},
 		});
@@ -89,7 +89,7 @@ describe("user routes", () => {
 			method: "DELETE",
 			url: "/delete",
 			body: {
-				username: "gino",
+				username: "gino@domain.com",
 			},
 		});
 
@@ -100,7 +100,7 @@ describe("user routes", () => {
 			method: "POST",
 			url: "/login",
 			body: {
-				username: "gino",
+				username: "gino@domain.com",
 				password: "giovanni6",
 			},
 		});
@@ -109,7 +109,7 @@ describe("user routes", () => {
 			method: "DELETE",
 			url: "/delete",
 			body: {
-				username: "gino",
+				username: "gino@domain.com",
 			},
 			headers: {
 				Authorization: "Bearer " + token,
@@ -123,7 +123,7 @@ describe("user routes", () => {
 			method: "POST",
 			url: "/login",
 			body: {
-				username: "gino",
+				username: "gino@domain.com",
 				password: "giovanni6",
 			},
 		});
@@ -138,7 +138,7 @@ describe("user routes", () => {
 			method: "DELETE",
 			url: "/delete",
 			body: {
-				username: "gino",
+				username: "gino@domain.com",
 			},
 			headers: {
 				Authorization: "Bearer " + token,
@@ -154,7 +154,7 @@ describe("user routes", () => {
 			method: "POST",
 			url: "/register",
 			body: {
-				username: "gino",
+				username: "gino@domain.com",
 				password: "giovanni6",
 			},
 		});
@@ -163,7 +163,7 @@ describe("user routes", () => {
 			method: "POST",
 			url: "/register",
 			body: {
-				username: "gino2",
+				username: "gino_2@domain.com",
 				password: "giovanni6",
 			},
 		});
@@ -173,7 +173,7 @@ describe("user routes", () => {
 			method: "POST",
 			url: "/login",
 			body: {
-				username: "gino",
+				username: "gino@domain.com",
 				password: "giovanni6",
 			},
 		});
@@ -189,7 +189,7 @@ describe("user routes", () => {
 			method: "DELETE",
 			url: "/delete",
 			body: {
-				username: "gino",
+				username: "gino@domain.com",
 			},
 			headers: {
 				Authorization: "Bearer " + token,
@@ -201,7 +201,7 @@ describe("user routes", () => {
 			method: "DELETE",
 			url: "/delete",
 			body: {
-				username: "gino2",
+				username: "gino_2@domain.com",
 			},
 			headers: {
 				Authorization: "Bearer " + token,

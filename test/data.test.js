@@ -14,7 +14,7 @@ describe("data routes", () => {
 			method: "POST",
 			url: "/register",
 			body: {
-				username: "gino",
+				username: "gino@domain.com",
 				password: "giovanni6",
 			},
 		});
@@ -23,7 +23,7 @@ describe("data routes", () => {
 			method: "POST",
 			url: "/login",
 			body: {
-				username: "gino",
+				username: "gino@domain.com",
 				password: "giovanni6",
 			},
 		});
@@ -34,7 +34,7 @@ describe("data routes", () => {
 			method: "POST",
 			url: "/register",
 			body: {
-				username: "gino2",
+				username: "gino_2@domain.com",
 				password: "pinuccio",
 			},
 		});
@@ -43,7 +43,7 @@ describe("data routes", () => {
 			method: "POST",
 			url: "/login",
 			body: {
-				username: "gino2",
+				username: "gino_2@domain.com",
 				password: "pinuccio",
 			},
 		});
@@ -318,6 +318,65 @@ describe("data routes", () => {
 		});
 
 		expect(response.statusCode).to.equal(200);
+	});
+	it("Should prevent an user with valid JWT to data protected routes if is not in the database anymore", async () => {
+		//register new user (just deleted)
+		let response = await server.inject({
+			method: "POST",
+			url: "/register",
+			body: {
+				username: "gino@domain.com",
+				password: "giovanni6",
+			},
+		});
+		//register new user2 (just deleted)
+		response = await server.inject({
+			method: "POST",
+			url: "/register",
+			body: {
+				username: "gino_2@domain.com",
+				password: "giovanni6",
+			},
+		});
+		//login the new user
+
+		response = await server.inject({
+			method: "POST",
+			url: "/login",
+			body: {
+				username: "gino@domain.com",
+				password: "giovanni6",
+			},
+		});
+
+		//manipulate jwt to have an user with admin role
+		let token = response.json().access_token;
+		const claims = jwt.verify(token, process.env.JWTSECRET);
+		claims.roles.push("admin");
+		token = jwt.sign(claims, process.env.JWTSECRET);
+
+		//self delete from db
+		response = await server.inject({
+			method: "DELETE",
+			url: "/delete",
+			body: {
+				username: "gino@domain.com",
+			},
+			headers: {
+				Authorization: "Bearer " + token,
+			},
+		});
+
+		//try to delete another user with valid JWT
+		response = await server.inject({
+			method: "GET",
+			url: "/data/test",
+			headers: {
+				Authorization: "Bearer " + token,
+			},
+		});
+
+		expect(response.statusCode).to.equal(401);
 	});
 	after((done) => {
 		server.close((err) => {
