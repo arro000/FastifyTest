@@ -1,4 +1,4 @@
-# FastyfyTest - Gestione Dati JSON con Autenticazione JWT
+# FastifyTest - Gestione Dati JSON con Autenticazione JWT
 
 Questo progetto si occupa di salvare diversi tipi di dati in un file JSON. Utilizza l'autenticazione JWT per garantire la sicurezza.
 
