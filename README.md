@@ -4,8 +4,8 @@ Questo progetto si occupa di salvare diversi tipi di dati in un file JSON. Utili
 
 ## Requisiti
 
-- Node.js
-- Yarn
+-   Node.js
+-   Yarn
 
 ## Installazione
 
@@ -33,19 +33,14 @@ Questo progetto si occupa di salvare diversi tipi di dati in un file JSON. Utili
 
 Per avviare l'applicazione:
 
-    ```bash
     yarn start
-    ```
+
 ### Avvio in Sviluppo
 
 Per avviare l'applicazione con demone di refresh al cambio di un file
 
-    ```bash
     yarn dev
-    ```
 
 Per avviare la suite di test
 
-     ```bash
-    yarn test
-    ```
+    yarn start

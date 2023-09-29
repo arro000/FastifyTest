@@ -137,6 +137,9 @@ describe("data routes", () => {
         const response = await server.inject({
             method: "GET",
             url: "/data/test",
+            headers: {
+                Authorization: "Bearer " + access_token_u1,
+            },
         });
 
         expect(response.statusCode).to.equal(200);
@@ -172,6 +175,9 @@ describe("data routes", () => {
         const response = await server.inject({
             method: "GET",
             url: "/data/test",
+            headers: {
+                Authorization: "Bearer " + access_token_u2,
+            },
         });
 
         expect(response.statusCode).to.equal(404);
@@ -201,7 +207,7 @@ describe("data routes", () => {
             },
         });
 
-        expect(response.statusCode).to.equal(404);
+        expect(response.statusCode).to.equal(200);
     });
     after((done) => {
         server.close((err) => {
