@@ -13,8 +13,8 @@ export default async function (fastify, options) {
             body: {
                 type: "object",
                 properties: {
-                    username: { type: "string" },
-                    password: { type: "string" },
+                    username: { type: "string", minLength: 3 },
+                    password: { type: "string", minLength: 6, maxLength: 25 },
                 },
             },
 

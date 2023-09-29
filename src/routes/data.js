@@ -12,8 +12,8 @@ function createData(fastify, options) {
             body: {
                 type: "object",
                 properties: {
-                    key: { type: "string" },
-                    data: { type: "string" },
+                    key: { type: "string", minLength: 3 },
+                    data: { type: "string", minLength: 1 },
                 },
             },
 
@@ -77,9 +77,14 @@ function updateData(fastify, options) {
      */
     const updateSchema = {
         onRequest: [fastify.authenticate],
-
+        body: {
+            type: "object",
+            properties: {
+                data: { type: "string", minLength: 1 },
+            },
+        },
         schema: {
-            required: ["key"],
+            required: ["data"],
         },
     };
     fastify.patch("/:key", updateSchema, async (request, reply) => {

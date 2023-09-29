@@ -15,7 +15,7 @@ describe("data routes", () => {
             url: "/register",
             body: {
                 username: "gino",
-                password: "pino",
+                password: "giovanni6",
             },
         });
 
@@ -24,7 +24,7 @@ describe("data routes", () => {
             url: "/login",
             body: {
                 username: "gino",
-                password: "pino",
+                password: "giovanni6",
             },
         });
         access_token_u1 = response.json().access_token;
@@ -49,7 +49,23 @@ describe("data routes", () => {
         });
         access_token_u2 = response.json().access_token;
     });
-    it("should create a new item for user db", async () => {
+    it("Should prevent the creation of a new item with no data.", async () => {
+        const response = await server.inject({
+            method: "POST",
+            url: "/data",
+            body: {
+                key: "test",
+                data: "",
+            },
+            headers: {
+                Authorization: "Bearer " + access_token_u1,
+            },
+        });
+
+        expect(response.statusCode).to.equal(400);
+    });
+
+    it("Should create a new item in the database belonging to the user.", async () => {
         const response = await server.inject({
             method: "POST",
             url: "/data",
@@ -64,7 +80,7 @@ describe("data routes", () => {
 
         expect(response.statusCode).to.equal(201);
     });
-    it("should prevent to create  a new item for user with the same key db", async () => {
+    it("Should prevent the creation of a new item for a user with the same key in the database for the same user.", async () => {
         const response = await server.inject({
             method: "POST",
             url: "/data",
@@ -80,7 +96,7 @@ describe("data routes", () => {
         expect(response.statusCode).to.equal(409);
     });
 
-    it("should read the just created item", async () => {
+    it("Should read the item that was just created.", async () => {
         const response = await server.inject({
             method: "GET",
             url: "/data/test",
@@ -92,7 +108,7 @@ describe("data routes", () => {
         expect(response.statusCode).to.equal(200);
         expect(response.body.data === "dGVzdA==");
     });
-    it("should prevent user2 to read key from user1", async () => {
+    it("Should prevent User 2 from reading the key belonging to User 1.", async () => {
         const response = await server.inject({
             method: "GET",
             url: "/data/test",
@@ -104,7 +120,7 @@ describe("data routes", () => {
         expect(response.statusCode).to.equal(404);
     });
 
-    it("should update just created item", async () => {
+    it("Should update the item that was just created.", async () => {
         const response = await server.inject({
             method: "PATCH",
             url: "/data/test",
@@ -118,7 +134,7 @@ describe("data routes", () => {
 
         expect(response.statusCode).to.equal(200);
     });
-    it("should prevent user2 to update key data from user1", async () => {
+    it("Should prevent User 2 from updating the data associated with User 1's key.", async () => {
         const response = await server.inject({
             method: "PATCH",
             url: "/data/test",
@@ -133,7 +149,7 @@ describe("data routes", () => {
         expect(response.statusCode).to.equal(404);
     });
 
-    it("should read the just updated item", async () => {
+    it("Should read the item that was just updated.", async () => {
         const response = await server.inject({
             method: "GET",
             url: "/data/test",
@@ -145,7 +161,7 @@ describe("data routes", () => {
         expect(response.statusCode).to.equal(200);
         expect(response.body.data === "dGVzdDE=");
     });
-    it("should prevent user2 to delete the just created item from user1", async () => {
+    it("Should prevent User 2 from deleting the item that was just created by User 1.", async () => {
         const response = await server.inject({
             method: "PATCH",
             url: "/data/test",
@@ -159,7 +175,7 @@ describe("data routes", () => {
 
         expect(response.statusCode).to.equal(404);
     });
-    it("should delete the just created item", async () => {
+    it("Should delete the item that was just created.", async () => {
         const response = await server.inject({
             method: "DELETE",
             url: "/data/test",
@@ -171,7 +187,7 @@ describe("data routes", () => {
         expect(response.statusCode).to.equal(200);
     });
 
-    it("should cant read the just deleted item", async () => {
+    it("Should not be able to read the item that was just deleted.", async () => {
         const response = await server.inject({
             method: "GET",
             url: "/data/test",
@@ -183,7 +199,7 @@ describe("data routes", () => {
         expect(response.statusCode).to.equal(404);
     });
 
-    it("should permit an admin to delete key from another user", async () => {
+    it("Should allow an admin to delete a key belonging to another user.", async () => {
         let response = await server.inject({
             method: "POST",
             url: "/data",
