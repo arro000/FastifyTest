@@ -5,7 +5,7 @@ import fastify from "fastify";
 import fastifyJwt from "@fastify/jwt";
 // import fastifySwagger from "fastify-swagger";
 import dotenv from "dotenv";
-
+import path from "path";
 import userRoutes from "./routes/user.js";
 import dataRoutes from "./routes/data.js";
 
@@ -13,11 +13,12 @@ export default function buildServer(test = false) {
 	//init the configuration variables
 	let props = {};
 	if (test) {
-		dotenv.config({ path: ".env.test" });
+		dotenv.config({ path: path.resolve(process.cwd(), ".env.test") });
 
 		props = { logger: false };
 	} else {
 		dotenv.config();
+
 		props ==
 			{
 				logger: {
@@ -25,7 +26,6 @@ export default function buildServer(test = false) {
 				},
 			};
 	}
-
 	//load configuration to fastify to create an instance
 	const server = fastify(props);
 
@@ -67,11 +67,3 @@ export default function buildServer(test = false) {
 	server.register(dataRoutes, { prefix: "/data" });
 	return server;
 }
-
-const app = buildServer();
-app.listen({ port: process.env.PORT }, (err, address) => {
-	if (err) {
-		app.log.error(err);
-		process.exit(1);
-	}
-});

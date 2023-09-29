@@ -31,9 +31,224 @@
 							"path": [
 								"register"
 							]
-						}
+						},
+						"description": "This is the route for register new user, only one user per username can be created for avoiding duplicates"
 					},
-					"response": []
+					"response": [
+						{
+							"name": "Register new user",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"username\":\"andrea\",\n    \"password\":\"andrea\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:3000/register",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "3000",
+									"path": [
+										"register"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "content-type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "content-length",
+									"value": "30"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 29 Sep 2023 14:09:51 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=72"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"user added to db\"\n}"
+						},
+						{
+							"name": "Already registered user",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"username\":\"andrea\",\n    \"password\":\"andrea\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/register",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"register"
+									]
+								}
+							},
+							"status": "Conflict",
+							"code": 409,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "content-type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "content-length",
+									"value": "32"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 29 Sep 2023 14:10:17 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=72"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"item is not unique\"\n}"
+						},
+						{
+							"name": "Bad username",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"username\":\"1\",\n    \"password\":\"andrea\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/register",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"register"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "content-type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "content-length",
+									"value": "132"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 29 Sep 2023 14:11:43 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=72"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"statusCode\": 400,\n    \"code\": \"FST_ERR_VALIDATION\",\n    \"error\": \"Bad Request\",\n    \"message\": \"body/username must NOT have fewer than 3 characters\"\n}"
+						},
+						{
+							"name": "Bad password",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"username\":\"andrea\",\n    \"password\":\"\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/register",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"register"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "content-type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "content-length",
+									"value": "132"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 29 Sep 2023 14:11:59 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=72"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"statusCode\": 400,\n    \"code\": \"FST_ERR_VALIDATION\",\n    \"error\": \"Bad Request\",\n    \"message\": \"body/password must NOT have fewer than 6 characters\"\n}"
+						}
+					]
 				},
 				{
 					"name": "login",
@@ -57,9 +272,115 @@
 							"path": [
 								"login"
 							]
-						}
+						},
+						"description": "This is the route for logging in a user; the route responds with a JWT token to be used in protected routes."
 					},
-					"response": []
+					"response": [
+						{
+							"name": "Login user",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"username\":\"andrea\",\n    \"password\":\"andrea\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/login",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"login"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "content-type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "content-length",
+									"value": "191"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 29 Sep 2023 14:09:54 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=72"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"access_token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiYW5kcmVhIiwicm9sZXMiOlsidXNlciJdLCJpYXQiOjE2OTU5OTY1OTQsImV4cCI6MTY5NTk5NzE5NH0.ppaCmyKGLoc-lqKb6Mn3VrLiCch4VUtMAZgs2LwvYFQ\"\n}"
+						},
+						{
+							"name": "Wrong password login",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"username\":\"andrea\",\n    \"password\":\"xxxxxxx\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/login",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"login"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "content-type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "content-length",
+									"value": "28"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 29 Sep 2023 14:24:46 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=72"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"item not found\"\n}"
+						}
+					]
 				},
 				{
 					"name": "delete",
@@ -93,11 +414,222 @@
 							"path": [
 								"delete"
 							]
-						}
+						},
+						"description": "This is the route for deleteing an user; only users with admin role can do this operation"
 					},
-					"response": []
+					"response": [
+						{
+							"name": "Delete an user",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"username\":\"andrea\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/delete",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"delete"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "content-type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "content-length",
+									"value": "20"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 29 Sep 2023 14:37:19 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=72"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"removed\": \"andrea\"\n}"
+						},
+						{
+							"name": "Not authorized",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"username\":\"andrea\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/delete",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"delete"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "content-type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "content-length",
+									"value": "143"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 29 Sep 2023 14:10:46 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=72"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"statusCode\": 401,\n    \"code\": \"FST_JWT_NO_AUTHORIZATION_IN_HEADER\",\n    \"error\": \"Unauthorized\",\n    \"message\": \"No Authorization was found in request.headers\"\n}"
+						},
+						{
+							"name": "Non admin delete",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"username\":\"andrea\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/delete",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"delete"
+									]
+								}
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "content-type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "content-length",
+									"value": "44"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 29 Sep 2023 14:11:24 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=72"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"only admin can call this route\"\n}"
+						},
+						{
+							"name": "Invalid token",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"username\":\"andrea\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/delete",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"delete"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "content-type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "content-length",
+									"value": "154"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 29 Sep 2023 14:29:54 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=72"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"statusCode\": 401,\n    \"code\": \"FST_JWT_AUTHORIZATION_TOKEN_INVALID\",\n    \"error\": \"Unauthorized\",\n    \"message\": \"Authorization token is invalid: The token is malformed.\"\n}"
+						}
+					]
 				}
-			]
+			],
+			"description": "This is the collection of all user routes, register, login and delete user"
 		},
 		{
 			"name": "DATA",
@@ -124,12 +656,287 @@
 							"path": [
 								"data"
 							]
-						}
+						},
+						"description": "Create a new data for user in the db"
 					},
-					"response": []
+					"response": [
+						{
+							"name": "Create new item",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{ \"key\": \"joseph.txt\", \"data\": \"SXMgdGhpcyBhIEpvSm8gcmVmZXJlbmNlPw==\" }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/data",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"data"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "content-type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "content-length",
+									"value": "39"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 29 Sep 2023 14:12:51 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=72"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"item added to db for user\"\n}"
+						},
+						{
+							"name": "Already created item",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{ \"key\": \"joseph.txt\", \"data\": \"SXMgdGhpcyBhIEpvSm8gcmVmZXJlbmNlPw==\" }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/data",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"data"
+									]
+								}
+							},
+							"status": "Conflict",
+							"code": 409,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "content-type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "content-length",
+									"value": "32"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 29 Sep 2023 14:12:59 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=72"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"item is not unique\"\n}"
+						},
+						{
+							"name": "Empty data prop",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{ \"key\": \"joseph.txt\", \"data\": \"\" }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/data",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"data"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "content-type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "content-length",
+									"value": "128"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 29 Sep 2023 14:13:25 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=72"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"statusCode\": 400,\n    \"code\": \"FST_ERR_VALIDATION\",\n    \"error\": \"Bad Request\",\n    \"message\": \"body/data must NOT have fewer than 1 characters\"\n}"
+						},
+						{
+							"name": "Not base64 data",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{ \"key\": \"joseph.txt\", \"data\": \"Ciao Gino!\" }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/data",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"data"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "content-type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "content-length",
+									"value": "210"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 29 Sep 2023 14:13:37 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=72"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"statusCode\": 400,\n    \"code\": \"FST_ERR_VALIDATION\",\n    \"error\": \"Bad Request\",\n    \"message\": \"body/data must match pattern \\\"^(?:[a-zA-Z0-9+/]{4})*(?:|(?:[a-zA-Z0-9+/]{3}=)|(?:[a-zA-Z0-9+/]{2}==)|(?:[a-zA-Z0-9+/]{1}===))$\\\"\"\n}"
+						},
+						{
+							"name": "Wrong format key",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{ \"key\": \"jo\", \"data\": \"SXMgdGhpcyBhIEpvSm8gcmVmZXJlbmNlPw==\" }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/data",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"data"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "content-type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "content-length",
+									"value": "127"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 29 Sep 2023 14:31:37 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=72"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"statusCode\": 400,\n    \"code\": \"FST_ERR_VALIDATION\",\n    \"error\": \"Bad Request\",\n    \"message\": \"body/key must NOT have fewer than 3 characters\"\n}"
+						}
+					]
 				},
 				{
 					"name": "read",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"\",function(){",
+									"    pm.response.to.have.status(200)",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -142,9 +949,99 @@
 								"data",
 								"joseph.txt"
 							]
-						}
+						},
+						"description": "This route updates the user data corresponding to a given key. The operation is only performed if the user is verified through a JWT token.\n\nIt will return 404 if the data is not owned by the user verified by the token"
 					},
-					"response": []
+					"response": [
+						{
+							"name": "Read item with key",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/data/joseph.txt",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"data",
+										"joseph.txt"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "content-type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "content-length",
+									"value": "82"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 29 Sep 2023 14:13:06 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=72"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"key\": \"joseph.txt\",\n    \"data\": \"SXMgdGhpcyBhIEpvSm8gcmVmZXJlbmNlPw==\",\n    \"user\": \"andrea\"\n}"
+						},
+						{
+							"name": "Not authorized",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/data/joseph.txt",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"data",
+										"joseph.txt"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "content-type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "content-length",
+									"value": "143"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 29 Sep 2023 14:27:03 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=72"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"statusCode\": 401,\n    \"code\": \"FST_JWT_NO_AUTHORIZATION_IN_HEADER\",\n    \"error\": \"Unauthorized\",\n    \"message\": \"No Authorization was found in request.headers\"\n}"
+						}
+					]
 				},
 				{
 					"name": "update",
@@ -153,7 +1050,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"data\":\"SXMgdGhpcyBhIEpvSm8gcmVmZXJlbmNlPw==2131231\"\n}",
+							"raw": "{\n    \"data\":\"dGhpcyBpcyBOT1QgYSBKb0pvIHJlZmVyZW5jZQ==\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -169,9 +1066,170 @@
 								"data",
 								"joseph.txt"
 							]
-						}
+						},
+						"description": "This route updates the user data corresponding to a given key. The operation is only performed if the user is verified through a JWT token.\n\nIt will return 404 if the data is not owned by the user verified by the token"
 					},
-					"response": []
+					"response": [
+						{
+							"name": "Update data",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"data\":\"dGhpcyBpcyBOT1QgYSBKb0pvIHJlZmVyZW5jZQ==\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/data/joseph.txt",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"data",
+										"joseph.txt"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "content-type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "content-length",
+									"value": "86"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 29 Sep 2023 14:13:13 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=72"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"key\": \"joseph.txt\",\n    \"data\": \"dGhpcyBpcyBOT1QgYSBKb0pvIHJlZmVyZW5jZQ==\",\n    \"user\": \"andrea\"\n}"
+						},
+						{
+							"name": "Update with non base64 str",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"data\":\"Ciao gINO!\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/data/joseph.txt",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"data",
+										"joseph.txt"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "content-type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "content-length",
+									"value": "210"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 29 Sep 2023 14:17:17 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=72"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"statusCode\": 400,\n    \"code\": \"FST_ERR_VALIDATION\",\n    \"error\": \"Bad Request\",\n    \"message\": \"body/data must match pattern \\\"^(?:[a-zA-Z0-9+/]{4})*(?:|(?:[a-zA-Z0-9+/]{3}=)|(?:[a-zA-Z0-9+/]{2}==)|(?:[a-zA-Z0-9+/]{1}===))$\\\"\"\n}"
+						},
+						{
+							"name": "Not authorized",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"data\":\"dGhpcyBpcyBOT1QgYSBKb0pvIHJlZmVyZW5jZQ==\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/data/joseph.txt",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"data",
+										"joseph.txt"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "content-type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "content-length",
+									"value": "143"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 29 Sep 2023 14:26:20 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=72"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"statusCode\": 401,\n    \"code\": \"FST_JWT_NO_AUTHORIZATION_IN_HEADER\",\n    \"error\": \"Unauthorized\",\n    \"message\": \"No Authorization was found in request.headers\"\n}"
+						}
+					]
 				},
 				{
 					"name": "delete",
@@ -187,11 +1245,58 @@
 								"data",
 								"joseph.txt"
 							]
-						}
+						},
+						"description": "This route delete the user data corresponding to a given key. The operation is only performed if the user is verified through a JWT token.  \n\nIt will return 404 if the data is not owned by the user verified by the token, only the admin can delete data for other user"
 					},
-					"response": []
+					"response": [
+						{
+							"name": "Delete data",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/data/joseph.txt",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"data",
+										"joseph.txt"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "content-type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "content-length",
+									"value": "54"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 29 Sep 2023 14:12:26 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=72"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"key\": \"joseph.txt\",\n    \"data\": \"dGVzdA==\",\n    \"user\": \"andrea\"\n}"
+						}
+					]
 				}
 			],
+			"description": "This is the collection of all data routes to manage datas in the database",
 			"auth": {
 				"type": "bearer",
 				"bearer": [
@@ -258,7 +1363,12 @@
 		},
 		{
 			"key": "jwtToken",
-			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiYW5kcmVhIiwicm9sZXMiOlsidXNlciJdLCJpYXQiOjE2OTU5NzkyNzIsImV4cCI6MTY5NTk3OTg3Mn0.6IRyEHTTgka4ls3h60Gw5GwC2G-2nHd2Du50Dyf8feE"
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiYW5kcmVhIiwicm9sZXMiOlsidXNlciJdLCJpYXQiOjE2OTU5OTc2ODksImV4cCI6MTc5NTk5ODI4OX0.FovirbtUeLDYFSkJ_2SqiO2s2AaONyZqbsHCtEoU8uc"
+		},
+		{
+			"key": "jwtTokenAdmin",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiYW5kcmVhIiwicm9sZXMiOlsidXNlciIsImFkbWluIl0sImlhdCI6MTY5NTk5NzY4OSwiZXhwIjoxNzk1OTk4Mjg5fQ.YY4LfgBq57MRkIhCJyTHtg2XOyryrKSzroNG-9B3UAw",
+			"type": "string"
 		}
 	]
 }

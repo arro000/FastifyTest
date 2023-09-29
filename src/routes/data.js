@@ -69,7 +69,16 @@ function readData(fastify, options) {
 		onRequest: [fastify.authenticate],
 
 		schema: {
-			required: ["key"],
+			params: {
+				type: "object",
+				properties: {
+					key: {
+						type: "string",
+						minLength: 3,
+					},
+				},
+				required: ["key"],
+			},
 		},
 	};
 	fastify.get("/:key", readSchema, async (request, reply) => {
@@ -96,14 +105,29 @@ function readData(fastify, options) {
 function updateData(fastify, options) {
 	const updateSchema = {
 		onRequest: [fastify.authenticate],
-		body: {
-			type: "object",
-			properties: {
-				data: { type: "string", minLength: 1, pattern: base64pattern },
-			},
-		},
+
 		schema: {
-			required: ["data"],
+			params: {
+				type: "object",
+				properties: {
+					key: {
+						type: "string",
+						minLength: 3,
+					},
+				},
+				required: ["key"],
+			},
+			body: {
+				type: "object",
+				properties: {
+					data: {
+						type: "string",
+						minLength: 1,
+						pattern: base64pattern,
+					},
+				},
+				required: ["data"],
+			},
 		},
 	};
 	fastify.patch("/:key", updateSchema, async (request, reply) => {
@@ -134,7 +158,16 @@ function deleteData(fastify, options) {
 		onRequest: [fastify.authenticate],
 
 		schema: {
-			required: ["key"],
+			params: {
+				type: "object",
+				properties: {
+					key: {
+						type: "string",
+						minLength: 3,
+					},
+				},
+				required: ["key"],
+			},
 		},
 	};
 	fastify.delete("/:key", deleteSchema, async (request, reply) => {

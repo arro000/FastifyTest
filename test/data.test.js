@@ -161,6 +161,20 @@ describe("data routes", () => {
 
 		expect(response.statusCode).to.equal(401);
 	});
+	it("Should prevent update if the new data is not base64 encoded.", async () => {
+		const response = await server.inject({
+			method: "PATCH",
+			url: "/data/test",
+			body: {
+				data: "Ciao Gino!",
+			},
+			headers: {
+				Authorization: "Bearer " + access_token_u1,
+			},
+		});
+
+		expect(response.statusCode).to.equal(400);
+	});
 	it("Should update the item that was just created.", async () => {
 		const response = await server.inject({
 			method: "PATCH",
