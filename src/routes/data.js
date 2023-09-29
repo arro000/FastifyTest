@@ -1,10 +1,20 @@
 "use strict";
 import { FsHandler } from "../utils/fsHandler.js";
 
+/**
+ *All routes
+ */
+export default async function (fastify, options) {
+    createData(fastify, options);
+    updateData(fastify, options);
+
+    readData(fastify, options);
+    deleteData(fastify, options);
+}
+/**
+ * create new data for user in the db
+ */
 function createData(fastify, options) {
-    /**
-     * create route
-     */
     const createSchema = {
         onRequest: [fastify.authenticate],
 
@@ -41,6 +51,9 @@ function createData(fastify, options) {
     });
 }
 
+/**
+ * read data for user in the db with given key
+ */
 function readData(fastify, options) {
     /**
      * read route
@@ -70,11 +83,10 @@ function readData(fastify, options) {
         }
     });
 }
-
+/**
+ * update data for user with given key
+ */
 function updateData(fastify, options) {
-    /**
-     * update route
-     */
     const updateSchema = {
         onRequest: [fastify.authenticate],
         body: {
@@ -106,10 +118,11 @@ function updateData(fastify, options) {
         }
     });
 }
+
+/**
+ * delete data for user with given key
+ */
 function deleteData(fastify, options) {
-    /**
-     * update route
-     */
     const deleteSchema = {
         onRequest: [fastify.authenticate],
 
@@ -136,12 +149,4 @@ function deleteData(fastify, options) {
             return reply.code(404).send({ message: ret.message });
         }
     });
-}
-
-export default async function (fastify, options) {
-    createData(fastify, options);
-    updateData(fastify, options);
-
-    readData(fastify, options);
-    deleteData(fastify, options);
 }

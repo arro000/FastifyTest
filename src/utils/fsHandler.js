@@ -1,5 +1,8 @@
 import fs from "fs";
 
+/**
+ * Class that expose append, read, update, delete methods to handle a js db with fs
+ */
 export class FsHandler {
     /**
      *  Append an element from a given db
@@ -31,6 +34,8 @@ export class FsHandler {
                 js.push(message);
                 fs.writeFileSync(fileName, JSON.stringify(js));
             } catch (err) {
+                //fs  encountered an exception
+
                 return {
                     status: false,
                     message: err.stack,
@@ -42,6 +47,8 @@ export class FsHandler {
                 //file not exist so we will create it from zero
                 fs.writeFileSync(fileName, JSON.stringify([message]));
             } catch (err) {
+                //fs  encountered an exception
+
                 return {
                     status: false,
                     message: err.stack,
@@ -74,6 +81,8 @@ export class FsHandler {
                     ret = { status: true, object: elem, message: null };
                 }
             } catch (err) {
+                //fs  encountered an exception
+
                 ret = {
                     status: false,
                     message: err.stack,
@@ -97,7 +106,7 @@ export class FsHandler {
      * @param {(a)=>boolean | null } filterPredicate function that check if already exist the element (paramToCheck)=>boolen
      * @returns {{status:boolean, message:string, obj:object}}
      * @example
-     * remove("file.txt",{test:"3"}, (a)=>a.test =="2")
+     * update("file.txt",{test:"3"}, (a)=>a.test =="2")
      * //if the element is found then will be update with new object in  database
      */
     static update(fileName, newObject, filterPredicate) {
@@ -119,6 +128,8 @@ export class FsHandler {
                     ret = { status: true, object: elem, message: null };
                 }
             } catch (err) {
+                //fs  encountered an exception
+
                 ret = {
                     status: false,
                     message: err.stack,
@@ -163,6 +174,7 @@ export class FsHandler {
                     ret = { status: true, object: elem, message: null };
                 }
             } catch (err) {
+                //fs  encountered an exception
                 ret = {
                     status: false,
                     message: err.stack,
@@ -180,6 +192,11 @@ export class FsHandler {
     }
 }
 
+/**
+ * Handle a file on filesystem an return the json object parsed
+ * @param {string} fileName
+ * @returns json
+ */
 function loadFile(fileName) {
     const textFile = fs.readFileSync(fileName);
     let js = [];

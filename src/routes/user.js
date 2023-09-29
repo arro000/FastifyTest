@@ -2,26 +2,32 @@
 
 import { FsHandler } from "../utils/fsHandler.js";
 import { sha256 } from "../utils/utils.js";
-
+/**
+ * All routes
+ */
 export default async function (fastify, options) {
-    /**
-     * Register a new user to db
-     */
+    registerUser(fastify, options);
+    loginUser(fastify, options);
+    deleteUser(fastify, options);
+}
 
-    const userSchema = {
-        schema: {
-            body: {
-                type: "object",
-                properties: {
-                    username: { type: "string", minLength: 3 },
-                    password: { type: "string", minLength: 6, maxLength: 25 },
-                },
+const userSchema = {
+    schema: {
+        body: {
+            type: "object",
+            properties: {
+                username: { type: "string", minLength: 3 },
+                password: { type: "string", minLength: 6, maxLength: 25 },
             },
-
-            required: ["username", "password"],
         },
-    };
 
+        required: ["username", "password"],
+    },
+};
+/**
+ * Register a new user to db
+ */
+function registerUser(fastify, options) {
     fastify.post("/register", userSchema, async (request, reply) => {
         const body = request.body;
         body.password = sha256(body.password);
@@ -37,10 +43,11 @@ export default async function (fastify, options) {
         else if (ret.isServerError) return reply.code(500).send(ret.message);
         else return reply.code(409).send({ message: ret.message });
     });
-
-    /**
-     * Login an user to system and return a jwt token
-     */
+}
+/**
+ * Login an user to system and return a jwt token
+ */
+function loginUser(fastify, options) {
     fastify.post("/login", userSchema, async (request, reply) => {
         let body = request.body;
         body.password = sha256(body.password);
@@ -64,10 +71,11 @@ export default async function (fastify, options) {
             return reply.code(401).send({ message: ret.message });
         }
     });
-
-    /**
-     * Remove an user from system
-     */
+}
+/**
+ * Remove an user from db
+ */
+function deleteUser(fastify, options) {
     const deleteUserSchema = {
         onRequest: [fastify.authenticate],
         schema: {

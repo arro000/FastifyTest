@@ -49,3 +49,5 @@ jspm_packages/
 .nyc_output
 .vscode
 coverage
+
+.prettierrc
