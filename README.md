@@ -14,7 +14,7 @@ Questo progetto si occupa di salvare diversi tipi di dati in un file JSON. Utili
 3. Installa le dipendenze:
 
     ```bash
-    git@github.com:arro000/FastifyTest.git
+    git clone git@github.com:arro000/FastifyTest.git
     cd FastifyTest
     yarn
     ```
