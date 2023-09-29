@@ -220,6 +220,21 @@ describe("data routes", () => {
 
 		expect(response.statusCode).to.equal(200);
 	});
+	it("Should permit an admin User read the data associated with User 1's key.", async () => {
+		const claims = jwt.verify(access_token_u2, process.env.JWTSECRET);
+		claims.roles.push("admin");
+		const access_token_u2_admin = jwt.sign(claims, process.env.JWTSECRET);
+		const response = await server.inject({
+			method: "GET",
+			url: "/data/test",
+
+			headers: {
+				Authorization: "Bearer " + access_token_u2_admin,
+			},
+		});
+
+		expect(response.statusCode).to.equal(200);
+	});
 
 	it("Should read the item that was just updated.", async () => {
 		const response = await server.inject({
