@@ -4,7 +4,7 @@ Questo progetto si occupa di salvare diversi tipi di dati in un file JSON. Utili
 
 ## Documentazione
 
-[![Run in Postman](https://run.pstmn.io/button.svg)](!https://documenter.getpostman.com/view/7237517/2s9YJaXii7)
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://documenter.getpostman.com/view/7237517/2s9YJaXii7)
 
 ## Requisiti
 
