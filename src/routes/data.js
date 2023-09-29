@@ -87,7 +87,7 @@ function readData(fastify, options) {
 		const ret = FsHandler.read(
 			process.env.DATADB,
 
-			(a) => a.user === request.user.user && a.key === key
+			getCorrectPredicateFilter(request, key)
 		);
 
 		if (ret.status) {
@@ -136,8 +136,9 @@ function updateData(fastify, options) {
 
 		const ret = FsHandler.update(
 			process.env.DATADB,
-			{ key: key, data: newData, user: request.user.user },
-			(a) => a.user === request.user.user && a.key === key
+			{ key: key, data: newData },
+			getCorrectPredicateFilter(request, key),
+			true
 		);
 
 		if (ret.status) {
@@ -173,13 +174,10 @@ function deleteData(fastify, options) {
 	fastify.delete("/:key", deleteSchema, async (request, reply) => {
 		const key = request.params.key;
 
-		let predicate = null;
-		if (request.user.roles.includes("admin")) {
-			predicate = (a) => a.key === key;
-		} else {
-			predicate = (a) => a.user === request.user.user && a.key === key;
-		}
-		const ret = FsHandler.remove(process.env.DATADB, predicate);
+		const ret = FsHandler.remove(
+			process.env.DATADB,
+			getCorrectPredicateFilter(request, key)
+		);
 
 		if (ret.status) {
 			return reply.code(200).send(ret.object[0]);
@@ -189,4 +187,19 @@ function deleteData(fastify, options) {
 			return reply.code(404).send({ message: ret.message });
 		}
 	});
+}
+/**
+ * Return the filter function if the use have or not have the admin role
+ * @param {object} request
+ * @param {string} key
+ * @returns (a)=>boolean
+ */
+function getCorrectPredicateFilter(request, key) {
+	let predicate = null;
+	if (request.user.roles.includes("admin")) {
+		predicate = (a) => a.key === key;
+	} else {
+		predicate = (a) => a.user === request.user.user && a.key === key;
+	}
+	return predicate;
 }

@@ -109,7 +109,12 @@ export class FsHandler {
      * remove("file.txt",{test:"3"}, (a)=>a.test =="2")
      * //if the element is found then will be update with new object in  database
      */
-	static update(fileName, newObject, filterPredicate) {
+	static update(
+		fileName,
+		newObject,
+		filterPredicate,
+		mantainProperty = false
+	) {
 		let ret = { status: false, message: null, object: null };
 		if (fs.existsSync) {
 			try {
@@ -121,7 +126,9 @@ export class FsHandler {
 					ret = { status: false, message: "item not found" };
 				} else {
 					//element is found so is deleted from array
-
+					if (mantainProperty) {
+						newObject.user = js[i].user;
+					}
 					const elem = (js[i] = newObject);
 					fs.writeFileSync(fileName, JSON.stringify(js));
 

@@ -218,7 +218,7 @@ describe("data routes", () => {
 			},
 		});
 
-		expect(response.statusCode).to.equal(404);
+		expect(response.statusCode).to.equal(200);
 	});
 
 	it("Should read the item that was just updated.", async () => {
