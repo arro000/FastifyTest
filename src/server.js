@@ -8,6 +8,7 @@ import dotenv from "dotenv";
 import path from "path";
 import userRoutes from "./routes/user.js";
 import dataRoutes from "./routes/data.js";
+import { FsHandler } from "./utils/fsHandler.js";
 
 export default function buildServer(test = false) {
 	//init the configuration variables
@@ -56,9 +57,19 @@ export default function buildServer(test = false) {
 	//add the new function to fastify instance
 	server.decorate("authenticate", async function (request, reply) {
 		try {
-			await request.jwtVerify();
+			let token = await request.jwtVerify();
+
+			let check = FsHandler.read(
+				process.env.USERDB,
+				(a) => a.username === token.user
+			);
+			if (check.status) {
+				return token;
+			} else {
+				throw "User not exist anymore";
+			}
 		} catch (err) {
-			reply.send(err);
+			reply.code(401).send(err);
 		}
 	});
 

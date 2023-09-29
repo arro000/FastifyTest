@@ -203,6 +203,23 @@ describe("data routes", () => {
 
 		expect(response.statusCode).to.equal(404);
 	});
+	it("Should permit an admin User to update the data associated with User 1's key.", async () => {
+		const claims = jwt.verify(access_token_u2, process.env.JWTSECRET);
+		claims.roles.push("admin");
+		const access_token_u2_admin = jwt.sign(claims, process.env.JWTSECRET);
+		const response = await server.inject({
+			method: "PATCH",
+			url: "/data/test",
+			body: {
+				data: "dGVzdDA=",
+			},
+			headers: {
+				Authorization: "Bearer " + access_token_u2_admin,
+			},
+		});
+
+		expect(response.statusCode).to.equal(404);
+	});
 
 	it("Should read the item that was just updated.", async () => {
 		const response = await server.inject({
@@ -228,6 +245,7 @@ describe("data routes", () => {
 
 		expect(response.statusCode).to.equal(404);
 	});
+
 	it('Should prevent use of data "delete" route without autentication.', async () => {
 		const response = await server.inject({
 			method: "DELETE",
