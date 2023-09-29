@@ -49,4 +49,4 @@ Per avviare l'applicazione con demone di refresh al cambio di un file
 
 Per avviare la suite di test
 
-    yarn start
+    yarn test
