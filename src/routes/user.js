@@ -2,7 +2,7 @@
 
 import { FsHandler } from "../utils/fsHandler.js";
 import { sha256 } from "../utils/utils.js";
-import { NOT_FOUND, ONLY_ADMIN } from "../utils/errors.js";
+import { NOT_FOUND, ONLY_ADMIN, NOT_UNIQUE } from "../utils/errors.js";
 /**
  * All routes
  */
@@ -45,7 +45,7 @@ function registerUser(fastify, options) {
 		if (ret.status)
 			return reply.code(201).send({ message: "user added to db" });
 		else if (ret.isServerError) return reply.code(500).send(ret.message);
-		else return reply.code(409).send({ message: ret.message });
+		else return reply.code(NOT_UNIQUE.statusCode).send(NOT_UNIQUE);
 	});
 }
 /**

@@ -9,3 +9,9 @@ export const NOT_FOUND = {
 	message: "Item not found",
 	error: "Not found",
 };
+
+export const NOT_UNIQUE = {
+	statusCode: 409,
+	message: "Item is not unique",
+	error: "Conflict",
+};

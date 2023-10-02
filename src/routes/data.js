@@ -1,5 +1,5 @@
 "use strict";
-import { NOT_FOUND, ONLY_ADMIN } from "../utils/errors.js";
+import { NOT_FOUND, ONLY_ADMIN, NOT_UNIQUE } from "../utils/errors.js";
 import { FsHandler } from "../utils/fsHandler.js";
 import { checkAdminRole } from "../utils/utils.js";
 //https://rgxdb.com/r/1NUN74O6 regex bas64 standard
@@ -55,7 +55,7 @@ function createData(fastify, options) {
 		} else if (ret.isServerError) {
 			return reply.code(500).send(ret.message);
 		} else {
-			return reply.code(409).send({ message: ret.message });
+			return reply.code(NOT_UNIQUE.statusCode).send(NOT_UNIQUE);
 		}
 	});
 }
