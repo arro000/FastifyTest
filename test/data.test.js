@@ -7,7 +7,8 @@ const server = serverBuilder(true);
 describe("data routes", () => {
 	let access_token_u1 = "";
 	let access_token_u2 = "";
-	let admin_token = "";
+	let access_token_u2_admin = "";
+
 	before(async () => {
 		//create  and login user 1
 		let response = await server.inject({
@@ -48,6 +49,9 @@ describe("data routes", () => {
 			},
 		});
 		access_token_u2 = response.json().access_token;
+		const claims = jwt.verify(access_token_u2, process.env.JWTSECRET);
+		claims.roles.push("admin");
+		access_token_u2_admin = jwt.sign(claims, process.env.JWTSECRET);
 	});
 
 	describe("Creation of data", () => {
@@ -139,15 +143,9 @@ describe("data routes", () => {
 			expect(response.statusCode).to.equal(404);
 		});
 		it("Should permit an admin User read the data associated with User 1's key.", async () => {
-			const claims = jwt.verify(access_token_u2, process.env.JWTSECRET);
-			claims.roles.push("admin");
-			const access_token_u2_admin = jwt.sign(
-				claims,
-				process.env.JWTSECRET
-			);
 			const response = await server.inject({
 				method: "GET",
-				url: "/data/test",
+				url: "/data/test/gino@domain.com",
 
 				headers: {
 					Authorization: "Bearer " + access_token_u2_admin,
@@ -201,12 +199,6 @@ describe("data routes", () => {
 			expect(response.statusCode).to.equal(404);
 		});
 		it("Should permit an admin User to update the data associated with User 1's key.", async () => {
-			const claims = jwt.verify(access_token_u2, process.env.JWTSECRET);
-			claims.roles.push("admin");
-			const access_token_u2_admin = jwt.sign(
-				claims,
-				process.env.JWTSECRET
-			);
 			const response = await server.inject({
 				method: "PATCH",
 				url: "/data/test",
@@ -285,14 +277,11 @@ describe("data routes", () => {
 				},
 			});
 
-			const claims = jwt.verify(access_token_u2, process.env.JWTSECRET);
-			claims.roles.push("admin");
-			access_token_u2 = jwt.sign(claims, process.env.JWTSECRET);
 			response = await server.inject({
 				method: "DELETE",
-				url: "/data/test",
+				url: "/data/test/gino@domain.com",
 				headers: {
-					Authorization: "Bearer " + access_token_u2,
+					Authorization: "Bearer " + access_token_u2_admin,
 				},
 			});
 
