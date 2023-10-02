@@ -154,6 +154,18 @@ describe("data routes", () => {
 
 			expect(response.statusCode).to.equal(200);
 		});
+		it("Should prevent a non-administrator user from using a read route with additional user parameters.", async () => {
+			const response = await server.inject({
+				method: "GET",
+				url: "/data/test/gino@domain.com",
+
+				headers: {
+					Authorization: "Bearer " + access_token_u2,
+				},
+			});
+
+			expect(response.statusCode).to.equal(403);
+		});
 	});
 	describe("Update of data", () => {
 		it("Should prevent update if the new data is not base64 encoded.", async () => {
@@ -202,6 +214,34 @@ describe("data routes", () => {
 			const response = await server.inject({
 				method: "PATCH",
 				url: "/data/test",
+				body: {
+					data: "dGVzdDA=",
+				},
+				headers: {
+					Authorization: "Bearer " + access_token_u2_admin,
+				},
+			});
+
+			expect(response.statusCode).to.equal(200);
+		});
+		it("Should prevent a non-administrator user from using a update route with additional user parameters.", async () => {
+			const response = await server.inject({
+				method: "PATCH",
+				url: "/data/test/gino@domain.com",
+				body: {
+					data: "dGVzdDA=",
+				},
+				headers: {
+					Authorization: "Bearer " + access_token_u2,
+				},
+			});
+
+			expect(response.statusCode).to.equal(403);
+		});
+		it("Should permit an admin User to update the data associated with User 1's key.", async () => {
+			const response = await server.inject({
+				method: "PATCH",
+				url: "/data/test/gino@domain.com",
 				body: {
 					data: "dGVzdDA=",
 				},
@@ -286,6 +326,29 @@ describe("data routes", () => {
 			});
 
 			expect(response.statusCode).to.equal(200);
+		});
+		it("Should prevent a non-administrator user from using a delete route with additional user parameters.", async () => {
+			let response = await server.inject({
+				method: "POST",
+				url: "/data",
+				body: {
+					key: "test",
+					data: "dGVzdA==",
+				},
+				headers: {
+					Authorization: "Bearer " + access_token_u1,
+				},
+			});
+
+			response = await server.inject({
+				method: "DELETE",
+				url: "/data/test/gino@domain.com",
+				headers: {
+					Authorization: "Bearer " + access_token_u2,
+				},
+			});
+
+			expect(response.statusCode).to.equal(403);
 		});
 	});
 
