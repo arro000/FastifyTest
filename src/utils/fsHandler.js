@@ -99,22 +99,16 @@ export class FsHandler {
 		return ret;
 	}
 	/**
-     * Update an element from a given db
-     * @param {string} fileName
-     * @param {string} newObject new object that replace the old
-
-     * @param {(a)=>boolean | null } filterPredicate function that check if already exist the element (paramToCheck)=>boolen
-     * @returns {{status:boolean, message:string, obj:object}}
-     * @example
-     * remove("file.txt",{test:"3"}, (a)=>a.test =="2")
-     * //if the element is found then will be update with new object in  database
-     */
-	static update(
-		fileName,
-		newObject,
-		filterPredicate,
-		mantainProperty = false
-	) {
+	 * Update an element from a given db
+	 * @param {string} fileName
+	 * @param {string} newObject new object that replace the old
+	 * @param {(a)=>boolean | null } filterPredicate function that check if already exist the element (paramToCheck)=>boolen
+	 * @returns {{status:boolean, message:string, obj:object}}
+	 * @example
+	 * remove("file.txt",{test:"3"}, (a)=>a.test =="2")
+	 * //if the element is found then will be update with new object in  database
+	 */
+	static update(fileName, newObject, filterPredicate) {
 		let ret = { status: false, message: null, object: null };
 		if (fs.existsSync) {
 			try {
@@ -125,11 +119,8 @@ export class FsHandler {
 					//element is not found
 					ret = { status: false, message: "item not found" };
 				} else {
-					//element is found so is deleted from array
-					if (mantainProperty) {
-						newObject.user = js[i].user;
-					}
-					const elem = (js[i] = newObject);
+					const elem = { ...js[i], ...newObject };
+					js[i] = elem;
 					fs.writeFileSync(fileName, JSON.stringify(js));
 
 					ret = { status: true, object: elem, message: null };

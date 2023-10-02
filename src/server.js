@@ -20,12 +20,11 @@ export default function buildServer(test = false) {
 	} else {
 		dotenv.config();
 
-		props ==
-			{
-				logger: {
-					level: "info",
-				},
-			};
+		props = {
+			logger: {
+				level: "info",
+			},
+		};
 	}
 	//load configuration to fastify to create an instance
 	const server = fastify(props);

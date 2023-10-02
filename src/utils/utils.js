@@ -5,3 +5,6 @@ export function sha256(input) {
 	hash.update(input);
 	return hash.digest("hex");
 }
+export function checkAdminRole(request) {
+	return request.user.roles.includes("admin");
+}

@@ -1,5 +1,6 @@
 "use strict";
 import { FsHandler } from "../utils/fsHandler.js";
+import { checkAdminRole } from "../utils/utils.js";
 //https://rgxdb.com/r/1NUN74O6 regex bas64 standard
 const base64pattern =
 	"^(?:[a-zA-Z0-9+/]{4})*(?:|(?:[a-zA-Z0-9+/]{3}=)|(?:[a-zA-Z0-9+/]{2}==)|(?:[a-zA-Z0-9+/]{1}===))$";
@@ -76,18 +77,26 @@ function readData(fastify, options) {
 						type: "string",
 						minLength: 3,
 					},
+					user: {
+						type: "string",
+					},
 				},
 				required: ["key"],
 			},
 		},
 	};
-	fastify.get("/:key", readSchema, async (request, reply) => {
+	fastify.get("/:key/:user?", readSchema, async (request, reply) => {
 		const key = request.params.key;
-
+		const user = request.params.user;
+		if (user && !checkAdminRole(request)) {
+			return reply
+				.code(403)
+				.send("only admin can read data for another user");
+		}
 		const ret = FsHandler.read(
 			process.env.DATADB,
 
-			getCorrectPredicateFilter(request, key)
+			getCorrectPredicateFilter(request, key, user)
 		);
 
 		if (ret.status) {
@@ -114,6 +123,9 @@ function updateData(fastify, options) {
 						type: "string",
 						minLength: 3,
 					},
+					user: {
+						type: "string",
+					},
 				},
 				required: ["key"],
 			},
@@ -130,14 +142,19 @@ function updateData(fastify, options) {
 			},
 		},
 	};
-	fastify.patch("/:key", updateSchema, async (request, reply) => {
+	fastify.patch("/:key/:user?", updateSchema, async (request, reply) => {
 		const key = request.params.key;
 		const newData = request.body.data;
-
+		const user = request.params.user;
+		if (user && !checkAdminRole(request)) {
+			return reply
+				.code(403)
+				.send("only admin can update data for another user");
+		}
 		const ret = FsHandler.update(
 			process.env.DATADB,
 			{ key: key, data: newData },
-			getCorrectPredicateFilter(request, key),
+			getCorrectPredicateFilter(request, key, user),
 			true
 		);
 
@@ -166,17 +183,26 @@ function deleteData(fastify, options) {
 						type: "string",
 						minLength: 3,
 					},
+					user: {
+						type: "string",
+					},
 				},
 				required: ["key"],
 			},
 		},
 	};
-	fastify.delete("/:key", deleteSchema, async (request, reply) => {
+	fastify.delete("/:key/:user?", deleteSchema, async (request, reply) => {
 		const key = request.params.key;
+		const user = request.params.user;
 
+		if (user && !checkAdminRole(request)) {
+			return reply
+				.code(403)
+				.send("only admin can update data for another user");
+		}
 		const ret = FsHandler.remove(
 			process.env.DATADB,
-			getCorrectPredicateFilter(request, key)
+			getCorrectPredicateFilter(request, key, user)
 		);
 
 		if (ret.status) {
@@ -194,10 +220,14 @@ function deleteData(fastify, options) {
  * @param {string} key
  * @returns (a)=>boolean
  */
-function getCorrectPredicateFilter(request, key) {
+function getCorrectPredicateFilter(request, key, user = null) {
 	let predicate = null;
-	if (request.user.roles.includes("admin")) {
-		predicate = (a) => a.key === key;
+	if (checkAdminRole(request)) {
+		if (user != null) {
+			predicate = (a) => a.user === user && a.key === key;
+		} else {
+			predicate = (a) => a.key === key;
+		}
 	} else {
 		predicate = (a) => a.user === request.user.user && a.key === key;
 	}
