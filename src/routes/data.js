@@ -1,4 +1,5 @@
 "use strict";
+import { NOT_FOUND, ONLY_ADMIN } from "../utils/errors.js";
 import { FsHandler } from "../utils/fsHandler.js";
 import { checkAdminRole } from "../utils/utils.js";
 //https://rgxdb.com/r/1NUN74O6 regex bas64 standard
@@ -89,9 +90,7 @@ function readData(fastify, options) {
 		const key = request.params.key;
 		const user = request.params.user;
 		if (user && !checkAdminRole(request)) {
-			return reply
-				.code(403)
-				.send("only admin can read data for another user");
+			return reply.code(ONLY_ADMIN.statusCode).send(ONLY_ADMIN);
 		}
 		const ret = FsHandler.read(
 			process.env.DATADB,
@@ -104,7 +103,7 @@ function readData(fastify, options) {
 		} else if (ret.isServerError) {
 			return reply.code(500).send(ret.message);
 		} else {
-			return reply.code(404).send({ message: ret.message });
+			return reply.code(NOT_FOUND.statusCode).send(NOT_FOUND);
 		}
 	});
 }
@@ -147,9 +146,7 @@ function updateData(fastify, options) {
 		const newData = request.body.data;
 		const user = request.params.user;
 		if (user && !checkAdminRole(request)) {
-			return reply
-				.code(403)
-				.send("only admin can update data for another user");
+			return reply.code(ONLY_ADMIN.statusCode).send(ONLY_ADMIN);
 		}
 		const ret = FsHandler.update(
 			process.env.DATADB,
@@ -196,9 +193,7 @@ function deleteData(fastify, options) {
 		const user = request.params.user;
 
 		if (user && !checkAdminRole(request)) {
-			return reply
-				.code(403)
-				.send("only admin can update data for another user");
+			return reply.code(403).send(ONLY_ADMIN);
 		}
 		const ret = FsHandler.remove(
 			process.env.DATADB,
@@ -210,7 +205,7 @@ function deleteData(fastify, options) {
 		} else if (ret.isServerError) {
 			return reply.code(500).send(ret.message);
 		} else {
-			return reply.code(404).send({ message: ret.message });
+			return reply.code(NOT_FOUND.statusCode).send(NOT_FOUND);
 		}
 	});
 }

@@ -2,6 +2,7 @@
 
 import { FsHandler } from "../utils/fsHandler.js";
 import { sha256 } from "../utils/utils.js";
+import { NOT_FOUND, ONLY_ADMIN } from "../utils/errors.js";
 /**
  * All routes
  */
@@ -111,12 +112,10 @@ function deleteUser(fastify, options) {
 			} else if (ret.isServerError) {
 				return reply.code(500).send(ret.message);
 			} else {
-				return reply.code(404).send({ message: ret.message });
+				return reply.code(NOT_FOUND.statusCode).send(NOT_FOUND);
 			}
 		} else {
-			return reply
-				.code(403)
-				.send({ message: "only admin can call this route" });
+			return reply.code(ONLY_ADMIN.statusCode).send(ONLY_ADMIN);
 		}
 	});
 }
